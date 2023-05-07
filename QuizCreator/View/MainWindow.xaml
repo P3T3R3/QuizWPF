@@ -9,9 +9,27 @@
         
         mc:Ignorable="d"
         Title="{x:Static prop:Resources.WindowTitleText}" Height="400" Width="800">
-    <Grid>
-        <ListView HorizontalAlignment="Left" Height="350" Margin="380,10,0,0" VerticalAlignment="Top" Width="404" SelectionChanged="ListView_SelectionChanged"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="Pytanie" VerticalAlignment="Top" Width="365"/>
-        <ListBox x:Name="Odpowiedzi__zaznacz_poprawną_" HorizontalAlignment="Left" Height="100" Margin="10,38,0,0" VerticalAlignment="Top" Width="365"/>
-    </Grid>
+	<Window.DataContext>
+		<vm:MainViewModel x:Name="viewModel"/>
+	</Window.DataContext>
+	<Grid>
+		<ListView HorizontalAlignment="Left" Height="350" Margin="380,10,0,0" VerticalAlignment="Top" Width="404" ItemsSource="{Binding Quiz.Questions}" >
+			<ListView.View>
+
+				<GridView AllowsColumnReorder="true">
+					<GridViewColumn DisplayMemberBinding="{Binding QuestionText}" Header="Pytanie"/>
+				</GridView>
+
+			</ListView.View>
+		</ListView>
+		<TextBox HorizontalAlignment="Left" Height="23" Margin="10,39,0,0" TextWrapping="Wrap" Text="{Binding CurrentQuestion.QuestionText, Mode=TwoWay}" VerticalAlignment="Top" Width="365"/>
+
+		<TextBox HorizontalAlignment="Left" Height="23" Margin="10,12,0,0" TextWrapping="Wrap" Text="Quiz" VerticalAlignment="Top" Width="365"/>
+		<TextBox HorizontalAlignment="Left" Height="23" Margin="10,67,0,0" TextWrapping="Wrap" Text="Odpowiedź do pytania" VerticalAlignment="Top" Width="285"/>
+		<CheckBox Content="Prawidłowe" HorizontalAlignment="Left" Margin="298,70,0,0" VerticalAlignment="Top"/>
+		<ListView HorizontalAlignment="Left" Height="139" Margin="10,95,0,0" VerticalAlignment="Top" Width="365" ItemsSource="{Binding CurrentQuestion.Answers}"/>
+		<Button Content="Modyfikuj zaznaczone pytanie" HorizontalAlignment="Left" Margin="201,239,0,0" VerticalAlignment="Top" Width="167"/>
+		<Button Content="Utwórz nowe pytanie" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Width="128"/>
+		<Button Content="Usuń zaznaczone pytanie" HorizontalAlignment="Left" Margin="201,264,0,0" VerticalAlignment="Top" Width="167"/>
+	</Grid>
 </Window>
