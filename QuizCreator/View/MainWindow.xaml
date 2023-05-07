@@ -1,0 +1,17 @@
+﻿<Window x:Class="QuizCreator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuizCreator"
+        xmlns:prop="clr-namespace:QuizCreator.Properties"
+        xmlns:vm="clr-namespace:QuizCreator.ViewModel"
+        
+        mc:Ignorable="d"
+        Title="{x:Static prop:Resources.WindowTitleText}" Height="400" Width="800">
+    <Grid>
+        <ListView HorizontalAlignment="Left" Height="350" Margin="380,10,0,0" VerticalAlignment="Top" Width="404" SelectionChanged="ListView_SelectionChanged"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="Pytanie" VerticalAlignment="Top" Width="365"/>
+        <ListBox x:Name="Odpowiedzi__zaznacz_poprawną_" HorizontalAlignment="Left" Height="100" Margin="10,38,0,0" VerticalAlignment="Top" Width="365"/>
+    </Grid>
+</Window>
