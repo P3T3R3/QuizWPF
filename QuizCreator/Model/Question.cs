@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +16,8 @@ namespace QuizCreator.Model
             get { return selectedAnswer; }
             set { selectedAnswer = value; }
         }
-        private List<Answer> answers;
-        public List<Answer> Answers
+        private ObservableCollection<Answer> answers;
+        public ObservableCollection<Answer> Answers
         {
             get { return answers; }
         }
@@ -28,7 +29,17 @@ namespace QuizCreator.Model
         public Question(string questionText)
         {
             QuestionText = questionText;
-            answers = new List<Answer>();
+            answers = new ObservableCollection<Answer>();
+            for(int i = 1; i < 5; i++)
+            {
+                answers.Add(new Answer("Odp "+i,false));
+            }
+        }
+
+        public Question(Question question)
+        {
+            QuestionText = question.QuestionText;
+            answers = new ObservableCollection<Answer>(question.Answers.ToList());
         }
         public string ToString()
         {
@@ -47,6 +58,10 @@ namespace QuizCreator.Model
         {
             answers[id].AnswerText = answerText;
             answers[id].IsCorrect = isCorrect;
+        }
+        public void modifyAnswer(int id, Answer answer)
+        {
+            answers[id] = answer;
         }
         public void deleteAnswer(int id)
         {

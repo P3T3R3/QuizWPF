@@ -6,30 +6,39 @@
         xmlns:local="clr-namespace:QuizCreator"
         xmlns:prop="clr-namespace:QuizCreator.Properties"
         xmlns:vm="clr-namespace:QuizCreator.ViewModel"
-        
         mc:Ignorable="d"
         Title="{x:Static prop:Resources.WindowTitleText}" Height="400" Width="800">
-	<Window.DataContext>
-		<vm:MainViewModel x:Name="viewModel"/>
-	</Window.DataContext>
-	<Grid>
-		<ListView HorizontalAlignment="Left" Height="350" Margin="380,10,0,0" VerticalAlignment="Top" Width="404" ItemsSource="{Binding Quiz.Questions}" >
-			<ListView.View>
+    <Window.DataContext>
+        <vm:MainViewModel x:Name="viewModel"/>
+    </Window.DataContext>
+    <Grid>
+        <ListView HorizontalAlignment="Left" Height="350" Margin="380,10,0,0" VerticalAlignment="Top" Width="404" ItemsSource="{Binding Quiz.Questions, Mode=OneWay}" SelectedIndex="{Binding SelectedQuestionId, Mode=OneWayToSource}">
+            <ListView.View>
+                <GridView AllowsColumnReorder="false">
+                    <GridViewColumn DisplayMemberBinding="{Binding QuestionText}" Width="390" Header="Pytanie"/>
+                </GridView>
 
-				<GridView AllowsColumnReorder="true">
-					<GridViewColumn DisplayMemberBinding="{Binding QuestionText}" Header="Pytanie"/>
-				</GridView>
+            </ListView.View>
+        </ListView>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,39,0,0" TextWrapping="Wrap" Text="{Binding CurrentQuestion.QuestionText, Mode=TwoWay}" VerticalAlignment="Top" Width="365"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,67,0,0" TextWrapping="Wrap" Text="{Binding CurrentAnswer.AnswerText, Mode=TwoWay}" VerticalAlignment="Top" Width="285"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,12,0,0" TextWrapping="Wrap" Text="Quiz" VerticalAlignment="Top" Width="365"/>
+        <CheckBox Content="Prawidłowe" HorizontalAlignment="Left" Margin="298,70,0,0" VerticalAlignment="Top" IsChecked="{Binding CurrentAnswer.IsCorrect, Mode=TwoWay}"/>
+        <ListView HorizontalAlignment="Left" Height="139" Margin="10,95,0,0" VerticalAlignment="Top" Width="365" ItemsSource="{Binding CurrentQuestion.Answers}" SelectedIndex="{Binding SelectedAnswerId, Mode=TwoWay}" d:ItemsSource="{d:SampleData ItemCount=4}">
+            <ListView.View>
 
-			</ListView.View>
-		</ListView>
-		<TextBox HorizontalAlignment="Left" Height="23" Margin="10,39,0,0" TextWrapping="Wrap" Text="{Binding CurrentQuestion.QuestionText, Mode=TwoWay}" VerticalAlignment="Top" Width="365"/>
+                <GridView AllowsColumnReorder="false">
+                    <GridViewColumn DisplayMemberBinding="{Binding AnswerText}" Width="290" Header="Treść odpowiedzi"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding IsCorrect}" Width="65" Header="Prawidłowe"/>
+                </GridView>
 
-		<TextBox HorizontalAlignment="Left" Height="23" Margin="10,12,0,0" TextWrapping="Wrap" Text="Quiz" VerticalAlignment="Top" Width="365"/>
-		<TextBox HorizontalAlignment="Left" Height="23" Margin="10,67,0,0" TextWrapping="Wrap" Text="Odpowiedź do pytania" VerticalAlignment="Top" Width="285"/>
-		<CheckBox Content="Prawidłowe" HorizontalAlignment="Left" Margin="298,70,0,0" VerticalAlignment="Top"/>
-		<ListView HorizontalAlignment="Left" Height="139" Margin="10,95,0,0" VerticalAlignment="Top" Width="365" ItemsSource="{Binding CurrentQuestion.Answers}"/>
-		<Button Content="Modyfikuj zaznaczone pytanie" HorizontalAlignment="Left" Margin="201,239,0,0" VerticalAlignment="Top" Width="167"/>
-		<Button Content="Utwórz nowe pytanie" HorizontalAlignment="Left" Margin="10,239,0,0" VerticalAlignment="Top" Width="128"/>
-		<Button Content="Usuń zaznaczone pytanie" HorizontalAlignment="Left" Margin="201,264,0,0" VerticalAlignment="Top" Width="167"/>
-	</Grid>
+            </ListView.View>
+        </ListView>
+        <Button Content="Modyfikuj zaznaczone pytanie" Command="{Binding ModifyQuestion}" HorizontalAlignment="Left" Margin="208,313,0,0" VerticalAlignment="Top" Width="167"/>
+        <Button Content="Utwórz nowe pytanie" Command="{Binding AddQuestion}" HorizontalAlignment="Left" Margin="208,288,0,0" VerticalAlignment="Top" Width="167"/>
+        <Button Content="Usuń zaznaczone pytanie" Command="{Binding DeleteQuestion}" HorizontalAlignment="Left" Margin="208,338,0,0" VerticalAlignment="Top" Width="167"/>
+        <Button Content="Modyfikuj zaznaczoną odpowiedz" Command="{Binding ModifyAnswer}" HorizontalAlignment="Left" Margin="10,288,0,0" VerticalAlignment="Top" Width="193"/>
+        <Button Content="Zapisz do bazy" Command="{Binding x}" HorizontalAlignment="Left" Margin="10,313,0,0" VerticalAlignment="Top" Width="193"/>
+        <Button Content="Wczytaj bazę" Command="{Binding x}" HorizontalAlignment="Left" Margin="10,338,0,0" VerticalAlignment="Top" Width="193"/>
+    </Grid>
 </Window>

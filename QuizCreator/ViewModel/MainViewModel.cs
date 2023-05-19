@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -16,36 +16,127 @@ namespace QuizCreator.ViewModel
         public Model.Quiz Quiz
         {
             get { return quiz; }
-            private set { quiz = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Quiz))); }
+            private set { quiz = value; OnPropertyChanged(nameof(Quiz)); }
         }
         private Model.Question currentQuestion;
         public Model.Question CurrentQuestion
         {
             get { return currentQuestion; }
-            private set { currentQuestion = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentQuestion))); }
+            private set { currentQuestion = value; OnPropertyChanged(nameof(CurrentQuestion)); }
         }
-        public MainViewModel()
+        private Model.Answer currentAnswer;
+        public Model.Answer CurrentAnswer
         {
-            Quiz = new Model.Quiz("Test quiz");
-            Quiz.addQuestion("Test 123?");
-            Quiz.addQuestion("Test 1234?");
-            Quiz.Questions[0].addAnswer("Odp 1", true);
-            CurrentQuestion = Quiz.Questions[0];
+            get { return currentAnswer; }
+            private set { currentAnswer = value; OnPropertyChanged(nameof(CurrentAnswer)); }
         }
-        private ICommand selectQuestion;
-        public ICommand SelectQuestion {
+        private int selectedQuestionId;
+        public int SelectedQuestionId { get { return selectedQuestionId; }
+            set 
+            {
+                if (value == -1)
+                    return;
+                if (value == selectedQuestionId)
+                    return;
+                selectedQuestionId = value;
+                CurrentQuestion = Quiz.Questions[selectedQuestionId];
+                CurrentAnswer = Quiz.Questions[selectedQuestionId].Answers[0];
+                OnPropertyChanged(nameof(SelectedQuestionId));
+            } 
+        }
+
+        private int selectedAnswerId;
+        public int SelectedAnswerId
+        {
+            get { return selectedAnswerId; }
+            set
+            {
+                if (value == -1)
+                    return;
+                if (value == selectedAnswerId)
+                    return;
+                selectedAnswerId = value;
+                CurrentAnswer = new Model.Answer(Quiz.Questions[selectedQuestionId].Answers[selectedAnswerId]);
+                OnPropertyChanged(nameof(SelectedAnswerId));
+            }
+        }
+
+        private ICommand addQuestion;
+        private ICommand modifyQuestion;
+        private ICommand deleteQuestion;
+        private ICommand modifyAnswer;
+        private ICommand saveDatabase;
+        private ICommand loadDatabase;
+        public ICommand AddQuestion
+        {
             get
             {
-                // jesli nie jest określone polecenie to tworzymy je i zwracamy poprozez 
-                //pomocniczy typ RelayCommand
-                return selectQuestion ?? (selectQuestion = new RelayCommand(
-                    //co wykonuje polecenie
-                    (p) => { }
+                return addQuestion ?? (addQuestion = new RelayCommand(
+                    (p) => { Quiz.addQuestion(CurrentQuestion);
+                        CurrentQuestion = new Model.Question("");
+                        OnPropertyChanged("Quiz");
+                    }
                     ,
-                    //warunek kiedy może je wykonać
                     p => true)
                     );
             }
         }
+        public ICommand ModifyQuestion
+        {
+            get
+            {
+                return modifyQuestion ?? (modifyQuestion = new RelayCommand(
+                    (p) => {
+                        Quiz.modifyQuestion(selectedQuestionId, CurrentQuestion);
+                        CurrentQuestion = new Model.Question("");
+                        OnPropertyChanged("Quiz");
+                    }
+                    ,
+                    p => true)
+                    );
+            }
+        }
+        public ICommand DeleteQuestion
+        {
+            get
+            {
+                return deleteQuestion ?? (deleteQuestion = new RelayCommand(
+                    (p) => {
+                        Quiz.deleteQuestion(selectedQuestionId);
+                        OnPropertyChanged("Quiz");
+                    }
+                    ,
+                    p => true)
+                    );
+            }
+        }
+        public ICommand ModifyAnswer
+        {
+            get
+            {
+                return modifyAnswer ?? (modifyAnswer = new RelayCommand(
+                    (p) => {
+                        Quiz.Questions[SelectedQuestionId].modifyAnswer(SelectedAnswerId, CurrentAnswer);
+                        CurrentQuestion = Quiz.Questions[SelectedQuestionId];
+                        OnPropertyChanged("Quiz");
+                    }
+                    ,
+                    p => true)
+                    );
+            }
+        }
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public MainViewModel()
+        {
+            Quiz = new Model.Quiz("Test quiz");
+            CurrentQuestion = new Model.Question("");
+            Quiz.addQuestion(new Model.Question("Test 123?"));
+            Quiz.addQuestion(new Model.Question("Test 12325625?"));
+            
+        }
+
     }
 }

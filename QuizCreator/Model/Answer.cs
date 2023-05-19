@@ -21,6 +21,11 @@ namespace QuizCreator.Model
             AnswerText = answerText;
             IsCorrect = isCorrect;
         }
+        public Answer(Answer answer)
+        {
+            AnswerText = answer.AnswerText;
+            IsCorrect = answer.IsCorrect;
+        }
         public string ToString()
         {
             return AnswerText;
