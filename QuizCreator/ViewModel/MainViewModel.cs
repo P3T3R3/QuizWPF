@@ -1,11 +1,12 @@
-﻿using System;
+﻿using QuizCreator.Model;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
+using System.IO;
 namespace QuizCreator.ViewModel
 {
 
@@ -119,6 +120,33 @@ namespace QuizCreator.ViewModel
                         Quiz.Questions[SelectedQuestionId].modifyAnswer(SelectedAnswerId, CurrentAnswer);
                         CurrentQuestion = Quiz.Questions[SelectedQuestionId];
                         OnPropertyChanged("Quiz");
+                    }
+                    ,
+                    p => true)
+                    );
+            }
+        }
+        public ICommand SaveDatabase
+        {
+            get
+            {
+                return saveDatabase ?? (saveDatabase = new RelayCommand(
+                    (p) => {
+                        Model.DbCreator.create(quiz);
+                    }
+                    ,
+                    p => true)
+                    );
+            }
+        }
+        public ICommand LoadDatabase
+        {
+            get
+            {
+                return loadDatabase ?? (loadDatabase = new RelayCommand(
+                    (p) => {
+                        if(File.Exists(Quiz.Name+".db"))
+                            Quiz = Model.DbReader.load(Quiz.Name);
                     }
                     ,
                     p => true)

@@ -13,7 +13,7 @@ namespace QuizCreator.Model
         {
             get { return questions; }
         }
-        private string Name { get; set; }
+        public string Name {  get; set; }
         public Quiz(string name)
         {
             questions = new ObservableCollection<Model.Question>();

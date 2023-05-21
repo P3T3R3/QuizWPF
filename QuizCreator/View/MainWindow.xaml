@@ -22,7 +22,7 @@
         </ListView>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="10,39,0,0" TextWrapping="Wrap" Text="{Binding CurrentQuestion.QuestionText, Mode=TwoWay}" VerticalAlignment="Top" Width="365"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="10,67,0,0" TextWrapping="Wrap" Text="{Binding CurrentAnswer.AnswerText, Mode=TwoWay}" VerticalAlignment="Top" Width="285"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,12,0,0" TextWrapping="Wrap" Text="Quiz" VerticalAlignment="Top" Width="365"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,12,0,0" TextWrapping="Wrap" Text="{Binding Quiz.Name, Mode=TwoWay}" VerticalAlignment="Top" Width="365"/>
         <CheckBox Content="Prawidłowe" HorizontalAlignment="Left" Margin="298,70,0,0" VerticalAlignment="Top" IsChecked="{Binding CurrentAnswer.IsCorrect, Mode=TwoWay}"/>
         <ListView HorizontalAlignment="Left" Height="139" Margin="10,95,0,0" VerticalAlignment="Top" Width="365" ItemsSource="{Binding CurrentQuestion.Answers}" SelectedIndex="{Binding SelectedAnswerId, Mode=TwoWay}" d:ItemsSource="{d:SampleData ItemCount=4}">
             <ListView.View>
@@ -38,7 +38,7 @@
         <Button Content="Utwórz nowe pytanie" Command="{Binding AddQuestion}" HorizontalAlignment="Left" Margin="208,288,0,0" VerticalAlignment="Top" Width="167"/>
         <Button Content="Usuń zaznaczone pytanie" Command="{Binding DeleteQuestion}" HorizontalAlignment="Left" Margin="208,338,0,0" VerticalAlignment="Top" Width="167"/>
         <Button Content="Modyfikuj zaznaczoną odpowiedz" Command="{Binding ModifyAnswer}" HorizontalAlignment="Left" Margin="10,288,0,0" VerticalAlignment="Top" Width="193"/>
-        <Button Content="Zapisz do bazy" Command="{Binding x}" HorizontalAlignment="Left" Margin="10,313,0,0" VerticalAlignment="Top" Width="193"/>
-        <Button Content="Wczytaj bazę" Command="{Binding x}" HorizontalAlignment="Left" Margin="10,338,0,0" VerticalAlignment="Top" Width="193"/>
+        <Button Content="Zapisz do bazy" Command="{Binding SaveDatabase}" HorizontalAlignment="Left" Margin="10,313,0,0" VerticalAlignment="Top" Width="193"/>
+        <Button Content="Wczytaj bazę" Command="{Binding LoadDatabase}" HorizontalAlignment="Left" Margin="10,338,0,0" VerticalAlignment="Top" Width="193"/>
     </Grid>
 </Window>
